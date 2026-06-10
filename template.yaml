@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FastAPI app deployed to AWS Lambda with Mangum.
+Globals:
+  Function:
+    Timeout: 180
+    MemorySize: 512
+Resources:
+  FastApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_main.handler
+      Runtime: python3.13
+      CodeUri: .
+      Architectures:
+        - x86_64
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::ml-data-bucket-tutorial-2026-378829015448-ap-northeast-1-an/*
+      Environment:
+        Variables:
+          MODEL_BUCKET: ml-data-bucket-tutorial-2026-378829015448-ap-northeast-1-an
+          MODEL_PREFIX: ""
+      Events:
+        ApiRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+        Api:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
