@@ -1,13 +1,20 @@
-example calls:
-https://u8qosvaqnc.execute-api.ap-northeast-1.amazonaws.com/Prod/api/v1/recommend/Death%20Note
-https://u8qosvaqnc.execute-api.ap-northeast-1.amazonaws.com/Prod/api/v1/recommend/Naruto
+APIルート:
+
+・KNNモデル：{domain_url}/api/v1/recommend/{anime title}?model=knn
+
+・SVDモデル：{domain_url}/api/v1/recommend/{anime title}?model=svd
 
 
 
-Essential files for this MLOps:
+ファイルの説明：
 
-lambda_main.py — Lambda entry point (handler), defines routes
-recommender.py — recommendation logic (KNN + SVD)
-requirements.txt — Python dependencies
-template.yaml — SAM template (defines Lambda, API Gateway, IAM, S3 config)
-.github/workflows/aws-sam-deploy.yml — GitHub Actions CI/CD workflow
+・lambda_main.py — lambdaのエントリーポイントとなるファイル。FastAPIでAPIを実装している。
+
+・recommender.py — アニメ作品のおすすめモデルを呼び出す処理を実装している。 (KNN + SVD)
+
+・requirements.txt — プログラムの実行に必要なライブラリファイル
+
+・template.yaml — SAM template(AWS Serverless Application Model)ファイル。Lambda, API Gateway, IAM, S3 configの設定に必要なファイル。
+
+・aws-sam-deploy.yml — GitHub Actions CI/CD workflowを設定するのに必要なファイル。格納先：
+.github/workflows/aws-sam-deploy.yml
